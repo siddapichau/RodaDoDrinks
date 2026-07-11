@@ -1,56 +1,189 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Roda dos Drinks</title>
-    <link rel="manifest" href="manifest.json">
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="responsivo.css">
-    <!-- Ícone da aba do navegador -->
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes" />
+    <title>Roda dos Drinks · O Aplicativo</title>
     <link rel="icon" type="image/png" href="logo.png">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#1a0b2e">
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link rel="stylesheet" href="style.css" />
 </head>
-<body class="tema-padrao">
+<body>
     <div class="container">
-        <header>
-            <img src="logo.png" alt="Logo Roda dos Drinks" class="logo-principal">
-            <h1>Sorteie seu Drink!</h1>
+        <header class="header">
+            <div class="logo-area">
+                <img src="logo.png" alt="Logo Roda dos Drinks" class="app-logo-img" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                <div class="logo-box" style="display: none;">🍹</div>
+                <div class="logo-title">
+                    <h1>Roda dos Drinks</h1>
+                    <p><i class="fas fa-glass-martini-alt"></i> Sorteie seu drink da noite!</p>
+                </div>
+            </div>
+            <div class="top-stats">
+                <span id="vipStatusTag" class="vip-tag" style="display:none;">👑 VIP</span>
+                
+                <div id="userArea" class="user-area">
+                    <div class="user-avatar" id="userAvatar">?</div>
+                    <span class="user-name" id="userName">Convidado</span>
+                    <button class="btn-edit-name" id="btnEditName" title="Editar nome"><i class="fas fa-pencil-alt"></i></button>
+                </div>
+
+                <div class="stat-badge">
+                    <i class="fas fa-coins"></i>
+                    <span id="coin-balance"><i class="fas fa-spinner fa-spin"></i></span>
+                </div>
+
+                <button class="btn-google-login" id="btnGoogleLogin" style="display:none;"><i class="fab fa-google"></i> Google</button>
+                <button class="btn-toggle-mode" id="btnModeToggle"><i class="fas fa-moon"></i></button>
+            </div>
         </header>
 
-        <main>
-            <div class="roleta-container">
-                <div class="marcador"></div>
-                <!-- O Canvas onde a roleta será desenhada pelo JS -->
-                <canvas id="roletaCanvas" width="300" height="300"></canvas>
+        <!-- Roleta -->
+        <div class="card" style="padding: 1.5rem 1rem;">
+            <div class="roulette-wrapper">
+                <div class="roulette-arrow"></div>
+                <div class="canvas-container">
+                    <canvas id="rouletteCanvas" width="600" height="600"></canvas>
+                    <button class="center-spin-button" id="btnSpin">
+                        <span class="txt-top">Roda</span>
+                        <span class="txt-bottom">dos Drinks</span>
+                    </button>
+                </div>
             </div>
-            
-            <button id="btnGirar" class="btn-acao">GIRAR A RODA</button>
-            
-            <div id="resultadoSorteio" class="escondido">
-                <h2 id="nomeDrinkSorteado">...</h2>
-                <button id="btnVerReceita" class="btn-secundario">Ver Receita</button>
-            </div>
-        </main>
+        </div>
 
-        <footer>
-            <nav>
-                <a href="crono.html">Desafio (Cronômetro)</a>
-                <!-- Link escondido para o admin -->
-                <a href="admin-secreto.html" class="link-secreto" style="opacity: 0.1;">Admin</a>
-            </nav>
-        </footer>
+        <div class="action-row-buttons">
+            <button id="btnOpenDrinkModal" class="btn-gradient-action dynamic-blue">
+                <i class="fas fa-cocktail"></i> Selecionar Drinks
+            </button>
+            <button id="btnWatchAd" class="btn-gradient-action dynamic-green">
+                <i class="fas fa-video"></i> 📺 Ver Anúncio (+3 Moedas)
+            </button>
+        </div>
+
+        <section class="card premium-store">
+            <h2 style="color: var(--gold); border-bottom: none;"><i class="fas fa-store"></i> Loja Premium</h2>
+            <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom:1.5rem;">Melhore sua experiência e apoie o aplicativo!</p>
+            
+            <div class="premium-grid">
+                <div class="premium-card vip">
+                    <div class="premium-badge">Mais Popular</div>
+                    <h3>Passe VIP <small>(30 dias)</small></h3>
+                    <p>Libera <strong>TUDO</strong> na loja de moedas e remove anúncios forçados.</p>
+                    <div class="price">R$ 10,00</div>
+                    <button class="btn-premium btn-vip" onclick="window.comprarPacoteReal('vip')">Comprar VIP</button>
+                </div>
+                
+                <div class="premium-card no-ads">
+                    <h3>Remover Anúncios</h3>
+                    <p>Sorteie sem interrupções. Remove anúncios em tela cheia e rodapé para sempre.</p>
+                    <div class="price">R$ 5,00</div>
+                    <button class="btn-premium btn-noads" onclick="window.comprarPacoteReal('no_ads')">Remover Anúncios</button>
+                </div>
+            </div>
+        </section>
+
+        <section class="card">
+            <h2><i class="fas fa-clipboard-list"></i> Drinks na Roleta</h2>
+            <div class="drink-list" id="drinkListContainer"></div>
+        </section>
+
+        <section class="card">
+            <h2><i class="fas fa-palette"></i> Temas da Página</h2>
+            <div class="store-grid" id="pageThemesGrid" style="margin-bottom: 2rem;"></div>
+            <h2><i class="fas fa-life-ring"></i> Temas da Roleta</h2>
+            <div class="store-grid" id="rouletteThemesGrid"></div>
+        </section>
+
+        <section class="card">
+            <h2><i class="fas fa-volume-up"></i> Sons Personalizados</h2>
+            <div style="margin-bottom:0.8rem; font-weight:600; font-size:0.9rem; color:var(--text-secondary)">1. Sons de Giro da Roleta:</div>
+            <div class="store-grid" id="spinSoundsGrid" style="margin-bottom: 1.5rem;"></div>
+            <div style="margin-bottom:0.8rem; font-weight:600; font-size:0.9rem; color:var(--text-secondary)">2. Som de Fim (Quando a roleta para):</div>
+            <div class="store-grid" id="endSoundsGrid" style="margin-bottom: 1.5rem;"></div>
+            <div style="margin-bottom:0.8rem; font-weight:600; font-size:0.9rem; color:var(--text-secondary)">3. Som da Vitória (Comemoração):</div>
+            <div class="store-grid" id="winSoundsGrid"></div>
+        </section>
+
+        <!-- Seção de efeitos visuais removida conforme pedido -->
+
+        <section class="card">
+            <h2><i class="fas fa-book-open"></i> Receitas de Drinks</h2>
+            <div class="recipes-grid" id="recipesGrid"></div>
+        </section>
     </div>
 
-    <!-- Áudios padrão (O JS vai controlá-los) -->
-    <audio id="somGiro" src="resources/spin.mp3" preload="auto"></audio>
-    <audio id="somVitoria" src="resources/win.mp3" preload="auto"></audio>
+    <!-- Modais -->
+    <div id="drinkSelectionModal" class="result-overlay">
+        <div class="modal-content-box">
+            <div class="modal-header-container">
+                <h3>Selecione os Drinks</h3>
+                <span class="close-modal-x" id="btnCloseDrinkModal">&times;</span>
+            </div>
+            <div class="search-box-modal">
+                <input type="text" id="searchDrinkInput" placeholder="🔍 Buscar drink...">
+            </div>
+            <div class="grid-drink-options" id="modalDrinkOptionsGrid"></div>
+            <div id="drinkSelectionCount" style="text-align:center; margin-top:0.5rem; font-size:0.8rem; color:var(--text-muted);">0 / 6 selecionados</div>
+            <div style="text-align: center; margin-top: 0.5rem;">
+                <button class="btn-close-modal" id="btnSaveDrinkSelection">Salvar Alterações</button>
+            </div>
+        </div>
+    </div>
 
-    <!-- Scripts -->
-    <script type="module" src="firebase.js"></script>
-    <script src="temas.js"></script>
-    <script src="efeitos.js"></script>
-    <script src="core.js"></script>
+    <div id="adOverlay" class="iframe-overlay">
+        <div class="iframe-box">
+            <div class="iframe-header">
+                Aguarde <span id="adCountdown">30</span> segundos para coletar suas moedas...
+            </div>
+            <iframe id="adFrame" src="about:blank"></iframe>
+        </div>
+    </div>
+
+    <div class="result-overlay" id="resultOverlay">
+        <div class="result-modal">
+            <h3>Drink Sorteado!</h3>
+            <span class="drink-emoji" id="modalEmoji">🍹</span>
+            <div class="drink-name" id="modalDrinkName">Caipirinha</div>
+            <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom:1.5rem;">Saúde!</p>
+            <button class="btn-close-modal" id="btnCloseModal">Servir!</button>
+        </div>
+    </div>
+
+    <div id="mergeAccountModal" class="result-overlay" style="display: none; z-index: 200;">
+        <div class="result-modal" style="max-width: 480px; text-align: left;">
+            <h3 style="color: var(--accent); text-align: center; margin-bottom: 0.5rem;"><i class="fas fa-link"></i> Vincular Conta Google</h3>
+            <p style="font-size: 0.9rem; color: var(--text-secondary); text-align: center; margin-bottom: 1.2rem;">Você já tem progresso na conta anônima. O que deseja fazer?</p>
+            <div class="merge-option" id="mergeKeepAnon" style="border-color: #FFD700;">
+                <strong>📌 Manter dados anônimos</strong>
+                <p>Não vincular ao Google. Continuar com a conta atual.</p>
+            </div>
+            <div class="merge-option" id="mergeOverwrite" style="border-color: #FF0055;">
+                <strong>🔄 Sobrescrever com dados do Google</strong>
+                <p>Perderá todo o progresso anônimo e usará os dados salvos no Google.</p>
+            </div>
+            <div class="merge-option" id="mergeCombine" style="border-color: #00FF66;">
+                <strong>🔀 Mesclar dados</strong>
+                <p>Combinar moedas, itens desbloqueados e drinks.</p>
+            </div>
+            <div style="text-align: center; margin-top: 1rem;">
+                <button class="btn-action" id="btnMergeCancel" style="background: transparent; color: var(--text-muted); border: 1px solid var(--border-color); padding: 0.4rem 1.2rem;">Cancelar</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
+
+    <script src="firebase.js"></script>
     <script src="roleta.js"></script>
+    <script src="core.js"></script>
     <script src="app.js"></script>
 </body>
 </html>
