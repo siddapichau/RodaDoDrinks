@@ -1,5 +1,5 @@
 'use strict';
-console.log('core.js carregado (v31 - Roda dos Drinks em Tempo Real)');
+console.log('core.js carregado (v1 - Roda dos Drinks - DB Atualizado)');
 
 (function() {
     window.isServerSynced = false;
@@ -8,15 +8,23 @@ console.log('core.js carregado (v31 - Roda dos Drinks em Tempo Real)');
     window.DYNAMIC_RECIPES = []; 
     window.DYNAMIC_PAGE_THEMES = []; 
     window.DYNAMIC_ROULETTE_THEMES = []; 
-    window.BANCO_DE_DRINKS = []; 
+    window.BANCO_DE_BEBIDAS = []; 
     window.DYNAMIC_EFFECTS = [];
     window.DYNAMIC_SPIN_SOUNDS = [];
     window.DYNAMIC_END_SOUNDS = [];
     window.DYNAMIC_WIN_SOUNDS = [];
 
-    // === FALLBACKS DE EMERGÊNCIA ===
-    window.DEFAULT_PAGE_THEME = { id: "theme-1", nome: "Clássico", price: 0, light: { style: { bg: "linear-gradient(145deg, #1a0b2e 0%, #0d0517 100%)", card: "rgba(30, 11, 46, 0.85)", text: "#ffffff", accent: "#00F0FF", accentGradient: "linear-gradient(135deg, #00F0FF, #FF0055)" } }, dark: { style: { bg: "linear-gradient(145deg, #000000 0%, #111111 100%)", card: "rgba(20, 20, 20, 0.85)", text: "#f8fafc", accent: "#FF0055", accentGradient: "linear-gradient(135deg, #FF0055, #9400D3)" } } };
-    window.DEFAULT_ROULETTE_THEME = { id: "theme-1", nome: "Neon Bar", price: 0, light: { colors: ["#FF0055", "#00F0FF", "#00FF66", "#FFD700", "#FF8C00", "#9400D3"], wheelBorder: "#1a0b2e", wheelCenter: "#ffffff" }, dark: { colors: ["#FF0055", "#00F0FF", "#00FF66", "#FFD700", "#FF8C00", "#9400D3"], wheelBorder: "#f8fafc", wheelCenter: "#0f172a" } };
+    // === FALLBACKS DE EMERGÊNCIA (Cores Vibe Bar/Neon/Drinks) ===
+    window.DEFAULT_PAGE_THEME = { 
+        id: "theme-1", nome: "Clássico", price: 0, 
+        light: { style: { bg: "linear-gradient(145deg, #f0f8ff 0%, #cbe4e6 100%)", card: "rgba(255, 255, 255, 0.85)", text: "#1e293b", accent: "#ff007a", accentGradient: "linear-gradient(135deg, #00d4ff, #ff007a)" } }, 
+        dark: { style: { bg: "linear-gradient(145deg, #12002b 0%, #0a001a 100%)", card: "rgba(30, 41, 59, 0.85)", text: "#f8fafc", accent: "#00d4ff", accentGradient: "linear-gradient(135deg, #ff007a, #7000ff)" } } 
+    };
+    window.DEFAULT_ROULETTE_THEME = { 
+        id: "theme-1", nome: "Clássico Neon", price: 0, 
+        light: { colors: ["#ff007a", "#7000ff", "#00d4ff", "#00ff9d", "#ffea00", "#ff5e00"], wheelBorder: "#1e293b", wheelCenter: "#ffffff" }, 
+        dark: { colors: ["#ff007a", "#7000ff", "#00d4ff", "#00ff9d", "#ffea00", "#ff5e00"], wheelBorder: "#f8fafc", wheelCenter: "#0a001a" } 
+    };
     window.DEFAULT_EFFECT = { id: "effect-1", name: "🎊 Confetes Coloridos", price: 0, type: "confetti" };
     window.DEFAULT_SPIN_SOUND = { id: "spin-1", name: "Clássico", price: 0, type: "click" };
     window.DEFAULT_END_SOUND = { id: "end-1", name: "Acorde Simples", price: 0, type: "end-chord" };
@@ -31,7 +39,7 @@ console.log('core.js carregado (v31 - Roda dos Drinks em Tempo Real)');
 
     const _rawState = {
         coins: 0, vipUntil: 0, noAdsUntil: 0, darkMode: false, displayName: '', banned: false,
-        drinks: ["Caipirinha 🍹", "Cerveja 🍺", "Mojito 🌿", "Vodka 🧊"],
+        drinks: ["Cerveja 🍺", "Caipirinha 🍹", "Gin Tônica 🍸", "Refrigerante 🥤"],
         unlockedPageThemes: ["theme-1"], currentPageTheme: "theme-1",
         unlockedRouletteThemes: ["theme-1"], currentRouletteTheme: "theme-1",
         unlockedSpinSounds: ["spin-1"], currentSpinSound: "spin-1",
@@ -59,10 +67,10 @@ console.log('core.js carregado (v31 - Roda dos Drinks em Tempo Real)');
     window.isNoAdsAtivo = function() { return window.isVipAtivo() || _rawState.noAdsUntil > Date.now(); };
     window.isItemLiberado = function(nomeDoArray, idDoItem) { if (window.isVipAtivo()) return true; return _rawState[nomeDoArray].includes(idDoItem); };
 
-    // Atualização de drinks ao vivo
-    window.atualizarDrinksSeguro = function(novosDrinks) {
-        if (Array.isArray(novosDrinks) && novosDrinks.length >= 2 && novosDrinks.length <= 6) {
-            _rawState.drinks = novosDrinks;
+    // 🔴 FUNÇÃO NOVA: GRAVA BEBIDAS NO FIREBASE SEM RECARREGAR A PÁGINA 🔴
+    window.atualizarBebidasSeguro = function(novasBebidas) {
+        if (Array.isArray(novasBebidas) && novasBebidas.length >= 2 && novasBebidas.length <= 6) {
+            _rawState.drinks = novasBebidas;
             window.saveData();
             return true;
         }
@@ -201,7 +209,7 @@ console.log('core.js carregado (v31 - Roda dos Drinks em Tempo Real)');
         if (!Array.isArray(_rawState.unlockedWinSounds)) _rawState.unlockedWinSounds = ["win-1"];
         if (!Array.isArray(_rawState.unlockedPageThemes)) _rawState.unlockedPageThemes = ["theme-1"];
         if (!Array.isArray(_rawState.unlockedRouletteThemes)) _rawState.unlockedRouletteThemes = ["theme-1"];
-        if (!Array.isArray(_rawState.drinks) || _rawState.drinks.length === 0) _rawState.drinks = ["Caipirinha 🍹", "Cerveja 🍺", "Mojito 🌿", "Vodka 🧊"];
+        if (!Array.isArray(_rawState.drinks) || _rawState.drinks.length === 0) _rawState.drinks = ["Cerveja 🍺", "Caipirinha 🍹", "Gin Tônica 🍸", "Refrigerante 🥤"];
         if (!Array.isArray(_rawState.customDrinks)) _rawState.customDrinks = [];
         if (!Array.isArray(_rawState.unlockedRecipes)) _rawState.unlockedRecipes = [];
         if (!window.isItemLiberado('unlockedEffects', _rawState.currentEffect)) _rawState.currentEffect = "effect-1";
@@ -213,13 +221,13 @@ console.log('core.js carregado (v31 - Roda dos Drinks em Tempo Real)');
     }
 
     function popularListasDinamicas(data) {
-        window.DYNAMIC_RECIPES = []; window.DYNAMIC_PAGE_THEMES = []; window.DYNAMIC_ROULETTE_THEMES = []; window.BANCO_DE_DRINKS = [];
+        window.DYNAMIC_RECIPES = []; window.DYNAMIC_PAGE_THEMES = []; window.DYNAMIC_ROULETTE_THEMES = []; window.BANCO_DE_BEBIDAS = [];
         window.DYNAMIC_EFFECTS = []; window.DYNAMIC_SPIN_SOUNDS = []; window.DYNAMIC_END_SOUNDS = []; window.DYNAMIC_WIN_SOUNDS = [];
 
-        if (data.receitas) { Object.keys(data.receitas).forEach(k => window.DYNAMIC_RECIPES.push({ id: k, nome: data.receitas[k].nome || 'Receita', icone: data.receitas[k].icone || '🍹', preco: data.receitas[k].preco !== undefined ? parseInt(data.receitas[k].preco) : 5, link: `receita.html?id=${k}` })); }
+        if (data.receitas) { Object.keys(data.receitas).forEach(k => window.DYNAMIC_RECIPES.push({ id: k, nome: data.receitas[k].nome || 'Receita', icone: data.receitas[k].icone || '🥂', preco: data.receitas[k].preco !== undefined ? parseInt(data.receitas[k].preco) : 5, link: `receita.html?id=${k}` })); }
         if (data.temas_pagina) { Object.keys(data.temas_pagina).forEach(k => window.DYNAMIC_PAGE_THEMES.push(data.temas_pagina[k])); }
         if (data.temas_roleta) { Object.keys(data.temas_roleta).forEach(k => window.DYNAMIC_ROULETTE_THEMES.push(data.temas_roleta[k])); }
-        if (data.banco_drinks) { Object.keys(data.banco_drinks).forEach(k => window.BANCO_DE_DRINKS.push(data.banco_drinks[k])); }
+        if (data.banco_bebidas) { Object.keys(data.banco_bebidas).forEach(k => window.BANCO_DE_BEBIDAS.push(data.banco_bebidas[k])); }
         if (data.efeitos) { Object.keys(data.efeitos).forEach(k => window.DYNAMIC_EFFECTS.push(data.efeitos[k])); }
         if (data.sons_giro) { Object.keys(data.sons_giro).forEach(k => window.DYNAMIC_SPIN_SOUNDS.push(data.sons_giro[k])); }
         if (data.sons_fim) { Object.keys(data.sons_fim).forEach(k => window.DYNAMIC_END_SOUNDS.push(data.sons_fim[k])); }
@@ -338,7 +346,7 @@ console.log('core.js carregado (v31 - Roda dos Drinks em Tempo Real)');
             
             let bgStyle = pageData.style.bg || '';
             if (bgStyle.includes('radial-gradient') || bgStyle.includes('url')) {
-                bgStyle = _rawState.darkMode ? 'linear-gradient(145deg, #000000 0%, #111111 100%)' : 'linear-gradient(145deg, #1a0b2e 0%, #0d0517 100%)';
+                bgStyle = _rawState.darkMode ? 'linear-gradient(145deg, #12002b 0%, #0a001a 100%)' : 'linear-gradient(145deg, #f0f8ff 0%, #cbe4e6 100%)';
             }
 
             root.style.setProperty('--bg-body', bgStyle); 
