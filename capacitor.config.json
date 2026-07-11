@@ -1,6 +1,6 @@
 {
-  "appId": "com.rodadodrinks.app",
+  "appId": "com.siddapichau.rodadosdrinks",
   "appName": "Roda dos Drinks",
-  "webDir": ".",
+  "webDir": "www",
   "bundledWebRuntime": false
 }
