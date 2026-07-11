@@ -28,12 +28,12 @@ window.drawRoulette = function() {
 
     ctx.clearRect(0, 0, width, height);
 
-    // Lendo do array de drinks em vez de foods
+    // Agora lemos os "drinks" do appState (anteriormente "foods")
     const items = window.appState?.drinks || [];
     const numSegments = items.length;
 
-    // Cores Neon padrão caso o tema falhe
-    let colors = ["#FF0055", "#00F0FF", "#00FF66", "#FFD700", "#FF8C00", "#9400D3"];
+    // Cores Neon e Bordas (Fallback caso o tema falhe)
+    let colors = ['#FF0055', '#00F0FF', '#00FF66', '#FFD700', '#FF8C00', '#9400D3'];
     let wheelBorder = '#1a0b2e'; 
     let wheelCenter = '#ffffff';
 
@@ -50,7 +50,7 @@ window.drawRoulette = function() {
             }
         }
     } catch (e) {
-        console.warn("Erro ao buscar cores. Usando fallback.", e);
+        console.warn("Erro ao buscar cores. Usando fallback neon.", e);
     }
 
     if (numSegments === 0) {
@@ -72,8 +72,8 @@ window.drawRoulette = function() {
     ctx.beginPath();
     ctx.arc(centerX, centerY, radius + borderWidth, 0, 2 * Math.PI);
     ctx.fillStyle = wheelBorder;
-    ctx.shadowColor = 'rgba(0,240,255,0.4)'; // Brilho neon na borda
-    ctx.shadowBlur = 15;
+    ctx.shadowColor = 'rgba(0, 240, 255, 0.4)';
+    ctx.shadowBlur = 12;
     ctx.fill();
     ctx.shadowBlur = 0;
 
@@ -204,10 +204,10 @@ function finalizeSpin() {
             window.launchCurrentEffect();
         }
 
-        // Mantive os IDs originais do HTML (modalFoodName) para não quebrar a sua interface, mas a variável é winningDrink
-        const nameEl = document.getElementById('modalFoodName');
+        const nameEl = document.getElementById('modalDrinkName'); // Atualizado para Modal de Drink no HTML
         const emojiEl = document.getElementById('modalEmoji');
         const overlay = document.getElementById('resultOverlay');
+        
         if (nameEl && emojiEl && overlay) {
             nameEl.textContent = winningDrink;
             const emojiMatch = winningDrink.match(/\p{Emoji}/u);
