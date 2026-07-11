@@ -1,0 +1,18 @@
+/* Media Queries para Telas Pequenas */
+@media(max-width:500px) {
+    .container-roleta, .roulette-wrapper, .canvas-container {
+        width: 90vw !important;
+        height: 90vw !important;
+    }
+    
+    header, .header {
+        justify-content: center;
+        text-align: center;
+    }
+
+    .top-stats {
+        width: 100%;
+        justify-content: center;
+        margin-top: 10px;
+    }
+}
