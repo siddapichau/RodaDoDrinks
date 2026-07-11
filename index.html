@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Roda dos Drinks</title>
+    <link rel="manifest" href="manifest.json">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="responsivo.css">
+    <!-- Ícone da aba do navegador -->
+    <link rel="icon" type="image/png" href="logo.png">
+</head>
+<body class="tema-padrao">
+    <div class="container">
+        <header>
+            <img src="logo.png" alt="Logo Roda dos Drinks" class="logo-principal">
+            <h1>Sorteie seu Drink!</h1>
+        </header>
+
+        <main>
+            <div class="roleta-container">
+                <div class="marcador"></div>
+                <!-- O Canvas onde a roleta será desenhada pelo JS -->
+                <canvas id="roletaCanvas" width="300" height="300"></canvas>
+            </div>
+            
+            <button id="btnGirar" class="btn-acao">GIRAR A RODA</button>
+            
+            <div id="resultadoSorteio" class="escondido">
+                <h2 id="nomeDrinkSorteado">...</h2>
+                <button id="btnVerReceita" class="btn-secundario">Ver Receita</button>
+            </div>
+        </main>
+
+        <footer>
+            <nav>
+                <a href="crono.html">Desafio (Cronômetro)</a>
+                <!-- Link escondido para o admin -->
+                <a href="admin-secreto.html" class="link-secreto" style="opacity: 0.1;">Admin</a>
+            </nav>
+        </footer>
+    </div>
+
+    <!-- Áudios padrão (O JS vai controlá-los) -->
+    <audio id="somGiro" src="resources/spin.mp3" preload="auto"></audio>
+    <audio id="somVitoria" src="resources/win.mp3" preload="auto"></audio>
+
+    <!-- Scripts -->
+    <script type="module" src="firebase.js"></script>
+    <script src="temas.js"></script>
+    <script src="efeitos.js"></script>
+    <script src="core.js"></script>
+    <script src="roleta.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
