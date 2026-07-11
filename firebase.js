@@ -1,6 +1,7 @@
 'use strict';
 console.log('firebase.js carregado (Roda dos Drinks)');
 
+// Configurações do Roda dos Drinks inseridas conforme fornecido
 window.firebaseConfig = {
   apiKey: "AIzaSyDC6PDG-id7qrDEN37DJ32n0ew6HBhiIBg",
   authDomain: "rodadodrinks.firebaseapp.com",
