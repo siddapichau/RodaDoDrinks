@@ -6,22 +6,23 @@
     <title>Roda dos Drinks · O Aplicativo</title>
     <link rel="icon" type="image/png" href="logo.png">
     <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#1a0b2e">
+    <meta name="theme-color" content="#ff007a">
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
     <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="responsivo.css" />
 </head>
 <body>
     <div class="container">
         <header class="header">
             <div class="logo-area">
                 <img src="logo.png" alt="Logo Roda dos Drinks" class="app-logo-img" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                <div class="logo-box" style="display: none;">🍹</div>
+                <div class="logo-box" style="display: none;">🥂</div>
                 <div class="logo-title">
                     <h1>Roda dos Drinks</h1>
-                    <p><i class="fas fa-glass-martini-alt"></i> Sorteie seu drink da noite!</p>
+                    <p><i class="fas fa-star"></i> O seu guia de bebidas e drinks</p>
                 </div>
             </div>
             <div class="top-stats">
@@ -59,7 +60,7 @@
 
         <div class="action-row-buttons">
             <button id="btnOpenDrinkModal" class="btn-gradient-action dynamic-blue">
-                <i class="fas fa-cocktail"></i> Selecionar Drinks
+                <i class="fas fa-glass-cheers"></i> Selecionar Bebidas
             </button>
             <button id="btnWatchAd" class="btn-gradient-action dynamic-green">
                 <i class="fas fa-video"></i> 📺 Ver Anúncio (+3 Moedas)
@@ -81,7 +82,7 @@
                 
                 <div class="premium-card no-ads">
                     <h3>Remover Anúncios</h3>
-                    <p>Sorteie sem interrupções. Remove anúncios em tela cheia e rodapé para sempre.</p>
+                    <p>Jogue sem interrupções. Remove anúncios em tela cheia e rodapé para sempre.</p>
                     <div class="price">R$ 5,00</div>
                     <button class="btn-premium btn-noads" onclick="window.comprarPacoteReal('no_ads')">Remover Anúncios</button>
                 </div>
@@ -89,7 +90,7 @@
         </section>
 
         <section class="card">
-            <h2><i class="fas fa-clipboard-list"></i> Drinks na Roleta</h2>
+            <h2><i class="fas fa-clipboard-list"></i> Itens Ativos na Roleta</h2>
             <div class="drink-list" id="drinkListContainer"></div>
         </section>
 
@@ -106,14 +107,17 @@
             <div class="store-grid" id="spinSoundsGrid" style="margin-bottom: 1.5rem;"></div>
             <div style="margin-bottom:0.8rem; font-weight:600; font-size:0.9rem; color:var(--text-secondary)">2. Som de Fim (Quando a roleta para):</div>
             <div class="store-grid" id="endSoundsGrid" style="margin-bottom: 1.5rem;"></div>
-            <div style="margin-bottom:0.8rem; font-weight:600; font-size:0.9rem; color:var(--text-secondary)">3. Som da Vitória (Comemoração):</div>
+            <div style="margin-bottom:0.8rem; font-weight:600; font-size:0.9rem; color:var(--text-secondary)">3. Som da Vitória (Comemoração real):</div>
             <div class="store-grid" id="winSoundsGrid"></div>
         </section>
 
-        <!-- Seção de efeitos visuais removida conforme pedido -->
+        <section class="card">
+            <h2><i class="fas fa-magic"></i> Efeitos Visuais</h2>
+            <div class="store-grid" id="effectsGrid"></div>
+        </section>
 
         <section class="card">
-            <h2><i class="fas fa-book-open"></i> Receitas de Drinks</h2>
+            <h2><i class="fas fa-book-open"></i> Receitas Completas</h2>
             <div class="recipes-grid" id="recipesGrid"></div>
         </section>
     </div>
@@ -122,14 +126,14 @@
     <div id="drinkSelectionModal" class="result-overlay">
         <div class="modal-content-box">
             <div class="modal-header-container">
-                <h3>Selecione os Drinks</h3>
+                <h3>Selecione as Bebidas</h3>
                 <span class="close-modal-x" id="btnCloseDrinkModal">&times;</span>
             </div>
             <div class="search-box-modal">
-                <input type="text" id="searchDrinkInput" placeholder="🔍 Buscar drink...">
+                <input type="text" id="searchDrinkInput" placeholder="🔍 Buscar bebida...">
             </div>
             <div class="grid-drink-options" id="modalDrinkOptionsGrid"></div>
-            <div id="drinkSelectionCount" style="text-align:center; margin-top:0.5rem; font-size:0.8rem; color:var(--text-muted);">0 / 6 selecionados</div>
+            <div id="drinkSelectionCount" style="text-align:center; margin-top:0.5rem; font-size:0.8rem; color:var(--text-muted);">0 / 6 selecionadas</div>
             <div style="text-align: center; margin-top: 0.5rem;">
                 <button class="btn-close-modal" id="btnSaveDrinkSelection">Salvar Alterações</button>
             </div>
@@ -147,29 +151,31 @@
 
     <div class="result-overlay" id="resultOverlay">
         <div class="result-modal">
-            <h3>Drink Sorteado!</h3>
+            <h3>Bebida Sorteada!</h3>
             <span class="drink-emoji" id="modalEmoji">🍹</span>
             <div class="drink-name" id="modalDrinkName">Caipirinha</div>
-            <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom:1.5rem;">Saúde!</p>
-            <button class="btn-close-modal" id="btnCloseModal">Servir!</button>
+            <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom:1.5rem;">Saúde! 🥂</p>
+            <button class="btn-close-modal" id="btnCloseModal">Maravilha!</button>
         </div>
     </div>
 
+    <canvas id="confettiCanvas"></canvas>
+
     <div id="mergeAccountModal" class="result-overlay" style="display: none; z-index: 200;">
         <div class="result-modal" style="max-width: 480px; text-align: left;">
-            <h3 style="color: var(--accent); text-align: center; margin-bottom: 0.5rem;"><i class="fas fa-link"></i> Vincular Conta Google</h3>
+            <h3 style="color: var(--accent); text-align: center; margin-bottom: 0.5rem;"><i class="fas fa-merge"></i> Vincular Conta Google</h3>
             <p style="font-size: 0.9rem; color: var(--text-secondary); text-align: center; margin-bottom: 1.2rem;">Você já tem progresso na conta anônima. O que deseja fazer?</p>
-            <div class="merge-option" id="mergeKeepAnon" style="border-color: #FFD700;">
+            <div class="merge-option" id="mergeKeepAnon" style="border-color: #ffea00;">
                 <strong>📌 Manter dados anônimos</strong>
                 <p>Não vincular ao Google. Continuar com a conta atual.</p>
             </div>
-            <div class="merge-option" id="mergeOverwrite" style="border-color: #FF0055;">
+            <div class="merge-option" id="mergeOverwrite" style="border-color: #ff007a;">
                 <strong>🔄 Sobrescrever com dados do Google</strong>
                 <p>Perderá todo o progresso anônimo e usará os dados salvos no Google.</p>
             </div>
-            <div class="merge-option" id="mergeCombine" style="border-color: #00FF66;">
+            <div class="merge-option" id="mergeCombine" style="border-color: #00ff9d;">
                 <strong>🔀 Mesclar dados</strong>
-                <p>Combinar moedas, itens desbloqueados e drinks.</p>
+                <p>Combinar moedas, itens desbloqueados e bebidas.</p>
             </div>
             <div style="text-align: center; margin-top: 1rem;">
                 <button class="btn-action" id="btnMergeCancel" style="background: transparent; color: var(--text-muted); border: 1px solid var(--border-color); padding: 0.4rem 1.2rem;">Cancelar</button>
@@ -182,6 +188,10 @@
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
 
     <script src="firebase.js"></script>
+    <script src="sons.js"></script>
+    <!-- O script 'temas.js' e 'comidas.js' foram removidos permanentemente! Tudo está no Banco de Dados -->
+    <script src="efeitos-lista.js"></script>
+    <script src="efeitos.js"></script>
     <script src="roleta.js"></script>
     <script src="core.js"></script>
     <script src="app.js"></script>
