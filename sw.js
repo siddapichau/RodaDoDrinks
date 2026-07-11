@@ -5,10 +5,11 @@ const urlsToCache = [
   '/style.css',
   '/app.js',
   '/core.js',
+  '/firebase.js',
   '/logo.png',
   '/manifest.json',
   '/efeitos.js',
-  '/roleta.js',
+  '/roleta.js'
 ];
 
 self.addEventListener('install', event => {
