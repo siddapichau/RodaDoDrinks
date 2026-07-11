@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes" />
-    <title>Receita do Drink · Roda dos Drinks</title>
+    <title>Receita · Roda dos Drinks</title>
     <link rel="icon" type="image/png" href="logo.png">
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -12,21 +12,21 @@
     <link rel="stylesheet" href="style.css" />
     <style>
         .recipe-hero { text-align: center; margin-bottom: 2rem; }
-        .recipe-hero h1 { font-size: 2.4rem; font-weight: 800; background: var(--accent-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; display: inline-block; transition: background 0.4s ease; text-shadow: 0 0 10px rgba(0, 240, 255, 0.4); }
+        .recipe-hero h1 { font-size: 2.4rem; font-weight: 800; background: var(--accent-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; display: inline-block; transition: background 0.4s ease; }
         .recipe-hero p { color: var(--text-muted); margin-top: 0.5rem; }
         .recipe-tabs { display: flex; flex-wrap: wrap; gap: 0.8rem; justify-content: center; margin-bottom: 2.5rem; }
-        .recipe-tab { background: var(--bg-card); border: 2px solid var(--border-color); border-radius: 20px; padding: 0.8rem 1.2rem; font-weight: 600; cursor: pointer; transition: all 0.3s ease; color: var(--text-primary); box-shadow: 0 4px 12px rgba(0,240,255,0.1); display: flex; flex-direction: column; align-items: center; gap: 0.3rem; min-width: 100px; }
+        .recipe-tab { background: var(--bg-card); border: 2px solid var(--border-color); border-radius: 20px; padding: 0.8rem 1.2rem; font-weight: 600; cursor: pointer; transition: all 0.3s ease; color: var(--text-primary); box-shadow: 0 4px 12px rgba(0,0,0,0.05); display: flex; flex-direction: column; align-items: center; gap: 0.3rem; min-width: 100px; }
         .tab-icon { font-size: 1.8rem; line-height: 1; transition: transform 0.3s ease; }
-        .recipe-tab.active { border-color: var(--accent); background: rgba(0, 240, 255, 0.15); transform: translateY(-4px); box-shadow: 0 8px 24px rgba(0, 240, 255, 0.3); }
+        .recipe-tab.active { border-color: var(--gold); background: rgba(255, 234, 0, 0.10); transform: translateY(-4px); box-shadow: 0 8px 24px rgba(255, 234, 0, 0.2); }
         .recipe-tab.active .tab-icon { transform: scale(1.2); }
         .recipe-content { display: none; animation: fadeUp 0.4s ease; }
         .recipe-content.active { display: block; }
         @keyframes fadeUp { 0% { opacity: 0; transform: translateY(15px); } 100% { opacity: 1; transform: translateY(0); } }
         .recipe-card { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; align-items: start; }
-        .recipe-image { border-radius: 2rem; overflow: hidden; box-shadow: 0 8px 32px rgba(255,0,85,0.2); background: var(--bg-card); border: 1px solid var(--accent); }
+        .recipe-image { border-radius: 2rem; overflow: hidden; box-shadow: 0 8px 32px rgba(0,0,0,0.1); background: var(--bg-card); }
         .recipe-image img { width: 100%; height: auto; display: block; transition: transform 0.5s ease; }
         .recipe-details { display: flex; flex-direction: column; gap: 1.5rem; }
-        .recipe-details h2 { font-size: 1.8rem; margin-bottom: 0.2rem; color: var(--gold); text-shadow: 0 0 5px var(--gold); }
+        .recipe-details h2 { font-size: 1.8rem; margin-bottom: 0.2rem; color: var(--gold); }
         .recipe-details .description { color: var(--text-muted); font-size: 0.95rem; }
         
         /* Estilos ajustados para o HTML gerado pelo Editor Rico */
@@ -34,10 +34,9 @@
         .editor-render ul, .editor-render ol { margin-left: 1.5rem; margin-top: 0.5rem; }
         .editor-render li { margin-bottom: 0.5rem; }
         .editor-render b, .editor-render strong { color: var(--gold); }
-        .prep-box { border-left: 4px solid var(--accent); }
+        .prep-box { border-left: 4px solid var(--gold); }
         
         .btn-back { display: inline-flex; align-items: center; gap: 0.5rem; background: var(--bg-card); border: 1px solid var(--border-color); padding: 0.6rem 1.2rem; border-radius: 40px; color: var(--text-primary); text-decoration: none; font-weight: 600; transition: all 0.2s; margin-top: 1rem; }
-        .btn-back:hover { box-shadow: 0 0 10px var(--accent); border-color: var(--accent); }
         @media(max-width: 700px) { .recipe-card { grid-template-columns: 1fr; } .recipe-tabs { gap: 0.5rem; } .recipe-tab { min-width: 80px; padding: 0.6rem 0.8rem; font-size: 0.8rem; } .tab-icon { font-size: 1.4rem; } }
     </style>
 </head>
@@ -47,10 +46,10 @@
         <header class="header">
             <div class="logo-area">
                 <img src="logo.png" alt="Logo Roda dos Drinks" class="app-logo-img" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                <div class="logo-box" style="display: none;" id="headerEmoji">🍹</div>
+                <div class="logo-box" style="display: none;" id="headerEmoji">🥂</div>
                 <div class="logo-title">
                     <h1>Roda dos Drinks</h1>
-                    <p><i class="fas fa-glass-martini-alt"></i> <span id="headerTitle">Carregando...</span></p>
+                    <p><i class="fas fa-star"></i> <span id="headerTitle">Carregando...</span></p>
                 </div>
             </div>
             <div class="top-stats">
@@ -64,16 +63,16 @@
         <div class="card" id="dynamicContainer" style="display: none;">
             <div class="recipe-hero">
                 <h1 id="mainTitle">Carregando...</h1>
-                <p id="mainDesc">Aguarde enquanto preparamos seu drink na nuvem.</p>
+                <p id="mainDesc">Aguarde enquanto conectamos à nuvem.</p>
             </div>
             <div class="recipe-tabs" id="recipeTabs"></div>
             <div id="recipeContents"></div>
-            <div style="text-align: center;"><a href="index.html" class="btn-back"><i class="fas fa-arrow-left"></i> Voltar ao Bar</a></div>
+            <div style="text-align: center;"><a href="index.html" class="btn-back"><i class="fas fa-arrow-left"></i> Voltar ao Menu Principal</a></div>
         </div>
         
         <div id="loadingScreen" style="text-align: center; padding: 5rem 0;">
-            <i class="fas fa-circle-notch fa-spin" style="font-size: 3rem; color: var(--accent);"></i>
-            <p style="margin-top: 1rem; color: var(--text-muted);">Sincronizando com o bar...</p>
+            <i class="fas fa-circle-notch fa-spin" style="font-size: 3rem; color: var(--gold);"></i>
+            <p style="margin-top: 1rem; color: var(--text-muted);">Sincronizando com a nuvem...</p>
         </div>
     </div>
 
@@ -82,24 +81,25 @@
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
     <script src="firebase.js"></script>
-    <script src="temas.js"></script>
     <script src="core.js"></script>
     <script src="app.js"></script>
 
     <script>
+        console.log("receita.html carregado (v1 - Roda dos Drinks)");
+        
         document.addEventListener('DOMContentLoaded', () => {
             const urlParams = new URLSearchParams(window.location.search);
             const recipeId = urlParams.get('id');
 
             if (!recipeId) {
-                document.getElementById('loadingScreen').innerHTML = "<h2 style='color:var(--danger);'>Erro: Receita do drink não especificada.</h2>";
+                document.getElementById('loadingScreen').innerHTML = "<h2 style='color:var(--danger);'>Erro: Drink não especificado.</h2>";
                 return;
             }
 
             const db = firebase.database();
             db.ref('conteudo/receitas/' + recipeId).once('value').then(snapshot => {
                 if (!snapshot.exists()) {
-                    document.getElementById('loadingScreen').innerHTML = "<h2 style='color:var(--danger);'>Drink não encontrado no cardápio!</h2>";
+                    document.getElementById('loadingScreen').innerHTML = "<h2 style='color:var(--danger);'>Drink não encontrado!</h2>";
                     return;
                 }
 
@@ -116,7 +116,7 @@
         });
 
         function construirPagina(dados) {
-            document.getElementById('headerEmoji').textContent = dados.icone || '🍹';
+            document.getElementById('headerEmoji').textContent = dados.icone || '🥂';
             document.getElementById('headerTitle').textContent = `Receita de ${dados.nome}`;
             document.getElementById('mainTitle').textContent = dados.nomeLong || dados.nome;
             document.getElementById('mainDesc').textContent = dados.descricaoGeral || '';
@@ -157,12 +157,12 @@
                             <p class="description">${varObj.descricao}</p>
                             
                             <div>
-                                <h4 style="font-weight:700; margin-bottom:0.5rem; color:var(--text-primary);"><i class="fas fa-cocktail"></i> Ingredientes</h4>
+                                <h4 style="font-weight:700; margin-bottom:0.5rem; color:var(--text-primary);"><i class="fas fa-shopping-basket"></i> Ingredientes</h4>
                                 <div class="editor-render">${ingHTML}</div>
                             </div>
                             
                             <div>
-                                <h4 style="font-weight:700; margin-bottom:0.5rem; color:var(--text-primary);"><i class="fas fa-blender"></i> Modo de Preparo</h4>
+                                <h4 style="font-weight:700; margin-bottom:0.5rem; color:var(--text-primary);"><i class="fas fa-glass-cheers"></i> Modo de Preparo</h4>
                                 <div class="editor-render prep-box">${prepHTML}</div>
                             </div>
                         </div>
