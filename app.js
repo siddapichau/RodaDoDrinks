@@ -1,5 +1,5 @@
 'use strict';
-console.log('app.js carregado (v31 - UX Instantâneo e Sem Recarregamento - Drinks)');
+console.log('app.js carregado (v1 - Roda dos Drinks - UX Instantâneo)');
 
 window.updateCoinsDisplay = function() {
     const coinBalance = document.getElementById('coin-balance');
@@ -8,15 +8,15 @@ window.updateCoinsDisplay = function() {
 
 // ========================== RENDERIZADORES ==========================
 window.renderDrinkList = function() {
-    const container = document.getElementById('foodListContainer'); // Mantive o ID original para não quebrar seu HTML
+    const container = document.getElementById('drinkListContainer');
     if (!container) return;
     container.innerHTML = '';
     const drinks = window.appState?.drinks || [];
     if (drinks.length === 0) {
-        container.innerHTML = '<span style="color:var(--text-muted);">Nenhum drink selecionado.</span>'; return;
+        container.innerHTML = '<span style="color:var(--text-muted);">Nenhuma bebida selecionada.</span>'; return;
     }
     drinks.forEach((drink, idx) => {
-        const tag = document.createElement('div'); tag.className = 'food-tag';
+        const tag = document.createElement('div'); tag.className = 'food-tag'; // Mantida a classe CSS genérica
         tag.innerHTML = `${drink} <i class="fas fa-times" onclick="window.removeDrink(${idx})"></i>`;
         container.appendChild(tag);
     });
@@ -25,38 +25,38 @@ window.renderDrinkList = function() {
 
 window.removeDrink = function(idx) {
     if (window.appState && window.appState.drinks) {
-        const novosDrinks = [...window.appState.drinks];
-        novosDrinks.splice(idx, 1);
-        if (novosDrinks.length < 2) {
-            alert("A roleta precisa ter pelo menos 2 drinks!");
+        const novasBebidas = [...window.appState.drinks];
+        novasBebidas.splice(idx, 1);
+        if (novasBebidas.length < 2) {
+            alert("A roleta precisa ter pelo menos 2 bebidas!");
             return;
         }
         // Atualização instantânea na nuvem
-        if (typeof window.atualizarDrinksSeguro === 'function') {
-            window.atualizarDrinksSeguro(novosDrinks);
+        if (typeof window.atualizarBebidasSeguro === 'function') {
+            window.atualizarBebidasSeguro(novasBebidas);
             window.renderAll();
         }
     }
 };
 
 window.renderModalDrinkOptions = function(filterText = '') {
-    const modalGrid = document.getElementById('modalFoodOptionsGrid'); // Mantive o ID original do seu HTML
+    const modalGrid = document.getElementById('modalDrinkOptionsGrid');
     if (!modalGrid) return;
     modalGrid.innerHTML = '';
     
     // Fallback de Emergência
-    const fallbackDrinks = [{ nome: "Caipirinha", icone: "🍹" }, { nome: "Cerveja", icone: "🍺" }, { nome: "Mojito", icone: "🌿" }, { nome: "Vodka", icone: "🧊" }];
-    let allItems = (window.BANCO_DE_DRINKS && window.BANCO_DE_DRINKS.length > 0) ? [...window.BANCO_DE_DRINKS] : fallbackDrinks;
+    const fallbackDrinks = [{ nome: "Cerveja", icone: "🍺" }, { nome: "Caipirinha", icone: "🍹" }, { nome: "Gin Tônica", icone: "🍸" }, { nome: "Refrigerante", icone: "🥤" }];
+    let allItems = (window.BANCO_DE_BEBIDAS && window.BANCO_DE_BEBIDAS.length > 0) ? [...window.BANCO_DE_BEBIDAS] : fallbackDrinks;
     
     if (window.appState?.customDrinks) {
         window.appState.customDrinks.forEach(custom => {
             const match = custom.match(/\p{Emoji}/u);
             if (match) { allItems.push({ nome: custom.replace(/\p{Emoji}/u, '').trim(), icone: match[0] }); } 
-            else { allItems.push({ nome: custom, icone: '🍸' }); }
+            else { allItems.push({ nome: custom, icone: '🥂' }); }
         });
     }
     const filtradas = allItems.filter(item => item.nome.toLowerCase().includes(filterText.toLowerCase()));
-    const selecionadas = window._drinksSelecionadosTemporarios || [];
+    const selecionadas = window._bebidasSelecionadasTemporarias || [];
     
     if(filtradas.length === 0 && allItems.length === 0) {
         modalGrid.innerHTML = '<span style="color:var(--text-muted); font-size:0.8rem; text-align:center; width: 100%;">Carregando opções da nuvem...</span>';
@@ -74,9 +74,9 @@ window.renderModalDrinkOptions = function(filterText = '') {
                 if (selecionadas.length >= 6) { alert("Máximo de 6 itens permitidos!"); return; }
                 selecionadas.push(itemString); card.classList.add('selected');
             }
-            window._drinksSelecionadosTemporarios = selecionadas;
-            const info = document.getElementById('foodSelectionCount');
-            if (info) info.textContent = `${window._drinksSelecionadosTemporarios.length} / 6 selecionados`;
+            window._bebidasSelecionadasTemporarias = selecionadas;
+            const info = document.getElementById('drinkSelectionCount');
+            if (info) info.textContent = `${window._bebidasSelecionadasTemporarias.length} / 6 selecionadas`;
         });
         modalGrid.appendChild(card);
     });
@@ -333,31 +333,30 @@ document.addEventListener('DOMContentLoaded', function() {
         }, 1000);
     });
 
-    const foodModal = document.getElementById('foodSelectionModal');
-    document.getElementById('btnOpenFoodModal')?.addEventListener('click', () => {
+    const drinkModal = document.getElementById('drinkSelectionModal');
+    document.getElementById('btnOpenDrinkModal')?.addEventListener('click', () => {
         if (window.appState) {
-            window._drinksSelecionadosTemporarios = [...window.appState.drinks];
-            foodModal.style.display = 'flex';
-            window.renderModalDrinkOptions(document.getElementById('searchFoodInput')?.value || '');
-            let countEl = document.getElementById('foodSelectionCount');
-            if (countEl) countEl.textContent = `${window._drinksSelecionadosTemporarios.length} / 6 selecionados`;
+            window._bebidasSelecionadasTemporarias = [...window.appState.drinks];
+            drinkModal.style.display = 'flex';
+            window.renderModalDrinkOptions(document.getElementById('searchDrinkInput')?.value || '');
+            let countEl = document.getElementById('drinkSelectionCount');
+            if (countEl) countEl.textContent = `${window._bebidasSelecionadasTemporarias.length} / 6 selecionadas`;
         }
     });
     
-    document.getElementById('btnCloseFoodModal')?.addEventListener('click', () => foodModal.style.display = 'none');
-    document.getElementById('searchFoodInput')?.addEventListener('input', e => window.renderModalDrinkOptions(e.target.value));
+    document.getElementById('btnCloseDrinkModal')?.addEventListener('click', () => drinkModal.style.display = 'none');
+    document.getElementById('searchDrinkInput')?.addEventListener('input', e => window.renderModalDrinkOptions(e.target.value));
     
-    // 🔴 AGORA GRAVA NA HORA SEM RECARREGAR A PÁGINA 🔴
-    document.getElementById('btnSaveFoodSelection')?.addEventListener('click', () => {
-        if (!window._drinksSelecionadosTemporarios) return;
-        const count = window._drinksSelecionadosTemporarios.length;
-        if (count < 2) { alert("Selecione pelo menos 2 drinks!"); return; }
-        if (count > 6) { alert("Máximo permitido é 6 drinks na roleta!"); return; }
+    // 🔴 GRAVA NA HORA SEM RECARREGAR A PÁGINA 🔴
+    document.getElementById('btnSaveDrinkSelection')?.addEventListener('click', () => {
+        if (!window._bebidasSelecionadasTemporarias) return;
+        const count = window._bebidasSelecionadasTemporarias.length;
+        if (count < 2) { alert("Selecione pelo menos 2 bebidas!"); return; }
+        if (count > 6) { alert("Máximo permitido é 6 bebidas na roleta!"); return; }
         
-        if (typeof window.atualizarDrinksSeguro === 'function') {
-            // Atualiza a memória e a Firebase na hora!
-            window.atualizarDrinksSeguro([...window._drinksSelecionadosTemporarios]);
-            const modal = document.getElementById('foodSelectionModal');
+        if (typeof window.atualizarBebidasSeguro === 'function') {
+            window.atualizarBebidasSeguro([...window._bebidasSelecionadasTemporarias]);
+            const modal = document.getElementById('drinkSelectionModal');
             if (modal) modal.style.display = 'none';
             window.renderAll();
         }
