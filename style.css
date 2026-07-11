@@ -1,0 +1,172 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    background-color: #1a0b2e;
+    color: #ffffff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+.container, .admin-container, .receita-container {
+    width: 100%;
+    max-width: 500px;
+    padding: 20px;
+    text-align: center;
+}
+
+header {
+    margin-bottom: 20px;
+}
+
+.logo-principal {
+    width: 120px;
+    margin-bottom: 10px;
+    filter: drop-shadow(0 0 10px rgba(0, 240, 255, 0.5));
+}
+
+h1, h2, h3 {
+    color: #00F0FF;
+    text-shadow: 0 0 5px #00F0FF;
+    margin-bottom: 15px;
+}
+
+/* Roleta */
+.roleta-container {
+    position: relative;
+    margin: 20px auto;
+    width: 300px;
+    height: 300px;
+}
+
+.marcador {
+    position: absolute;
+    top: -15px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 15px solid transparent;
+    border-right: 15px solid transparent;
+    border-top: 30px solid #FF0055;
+    z-index: 10;
+    filter: drop-shadow(0 0 5px #FF0055);
+}
+
+canvas {
+    border-radius: 50%;
+    box-shadow: 0 0 20px rgba(255, 0, 85, 0.4), 0 0 40px rgba(0, 240, 255, 0.2);
+    transition: transform 0.1s ease-out;
+}
+
+/* Botões */
+.btn-acao, .btn-secundario, .btn-voltar {
+    background: linear-gradient(45deg, #FF0055, #9400D3);
+    color: white;
+    border: none;
+    padding: 15px 30px;
+    font-size: 1.2em;
+    font-weight: bold;
+    border-radius: 25px;
+    cursor: pointer;
+    margin: 10px 5px;
+    text-transform: uppercase;
+    box-shadow: 0 0 15px rgba(255, 0, 85, 0.5);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.btn-secundario {
+    background: linear-gradient(45deg, #00F0FF, #0088FF);
+    box-shadow: 0 0 15px rgba(0, 240, 255, 0.5);
+}
+
+.btn-voltar {
+    background: #333;
+    box-shadow: none;
+    display: inline-block;
+    text-decoration: none;
+    font-size: 1em;
+    padding: 10px 20px;
+}
+
+.btn-acao:active, .btn-secundario:active {
+    transform: scale(0.95);
+}
+
+/* Utilitários */
+.escondido {
+    display: none !important;
+}
+
+/* Admin Form */
+.admin-form input, .admin-form textarea, .admin-form select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    border: 1px solid #00F0FF;
+    background: rgba(255,255,255,0.1);
+    color: white;
+}
+
+.admin-form textarea {
+    height: 100px;
+    resize: vertical;
+}
+
+#listaDrinksAdmin {
+    list-style: none;
+    text-align: left;
+    margin-top: 20px;
+}
+
+#listaDrinksAdmin li {
+    background: rgba(255,255,255,0.05);
+    margin-bottom: 5px;
+    padding: 10px;
+    border-radius: 5px;
+    border-left: 3px solid #00F0FF;
+}
+
+/* Cronômetro e Receita */
+.display-tempo {
+    font-size: 3em;
+    font-weight: bold;
+    color: #FFD700;
+    text-shadow: 0 0 10px #FFD700;
+    margin: 20px 0;
+    letter-spacing: 2px;
+}
+
+.card-receita {
+    background: rgba(0, 240, 255, 0.1);
+    border: 1px solid #00F0FF;
+    border-radius: 15px;
+    padding: 20px;
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+/* Rodapé / Links */
+footer nav {
+    margin-top: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+}
+
+footer nav a {
+    color: #00F0FF;
+    text-decoration: none;
+    font-size: 0.9em;
+}
