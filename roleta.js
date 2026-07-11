@@ -28,12 +28,12 @@ window.drawRoulette = function() {
 
     ctx.clearRect(0, 0, width, height);
 
-    // Agora lemos os "drinks" do appState (anteriormente "foods")
+    // Mudança para buscar "drinks" no AppState
     const items = window.appState?.drinks || [];
     const numSegments = items.length;
 
-    // Cores Neon e Bordas (Fallback caso o tema falhe)
-    let colors = ['#FF0055', '#00F0FF', '#00FF66', '#FFD700', '#FF8C00', '#9400D3'];
+    // Paleta Neon padrão da Roda dos Drinks
+    let colors = ["#FF0055", "#00F0FF", "#00FF66", "#FFD700", "#FF8C00", "#9400D3"];
     let wheelBorder = '#1a0b2e'; 
     let wheelCenter = '#ffffff';
 
@@ -200,11 +200,9 @@ function finalizeSpin() {
         const activeWinSound = winSounds.find(s => s.id === window.appState.currentWinSound) || { type: 'win-tada' };
         if(typeof window.playSynthesizedSound === 'function') window.playSynthesizedSound(activeWinSound.type);
 
-        if (typeof window.launchCurrentEffect === 'function') {
-            window.launchCurrentEffect();
-        }
+        // Removida a chamada do `launchCurrentEffect` conforme solicitado
 
-        const nameEl = document.getElementById('modalDrinkName'); // Atualizado para Modal de Drink no HTML
+        const nameEl = document.getElementById('modalDrinkName'); 
         const emojiEl = document.getElementById('modalEmoji');
         const overlay = document.getElementById('resultOverlay');
         
