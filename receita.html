@@ -1,39 +1,184 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Receita do Drink</title>
-    <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes" />
+    <title>Receita do Drink · Roda dos Drinks</title>
     <link rel="icon" type="image/png" href="logo.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link rel="stylesheet" href="style.css" />
+    <style>
+        .recipe-hero { text-align: center; margin-bottom: 2rem; }
+        .recipe-hero h1 { font-size: 2.4rem; font-weight: 800; background: var(--accent-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; display: inline-block; transition: background 0.4s ease; text-shadow: 0 0 10px rgba(0, 240, 255, 0.4); }
+        .recipe-hero p { color: var(--text-muted); margin-top: 0.5rem; }
+        .recipe-tabs { display: flex; flex-wrap: wrap; gap: 0.8rem; justify-content: center; margin-bottom: 2.5rem; }
+        .recipe-tab { background: var(--bg-card); border: 2px solid var(--border-color); border-radius: 20px; padding: 0.8rem 1.2rem; font-weight: 600; cursor: pointer; transition: all 0.3s ease; color: var(--text-primary); box-shadow: 0 4px 12px rgba(0,240,255,0.1); display: flex; flex-direction: column; align-items: center; gap: 0.3rem; min-width: 100px; }
+        .tab-icon { font-size: 1.8rem; line-height: 1; transition: transform 0.3s ease; }
+        .recipe-tab.active { border-color: var(--accent); background: rgba(0, 240, 255, 0.15); transform: translateY(-4px); box-shadow: 0 8px 24px rgba(0, 240, 255, 0.3); }
+        .recipe-tab.active .tab-icon { transform: scale(1.2); }
+        .recipe-content { display: none; animation: fadeUp 0.4s ease; }
+        .recipe-content.active { display: block; }
+        @keyframes fadeUp { 0% { opacity: 0; transform: translateY(15px); } 100% { opacity: 1; transform: translateY(0); } }
+        .recipe-card { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; align-items: start; }
+        .recipe-image { border-radius: 2rem; overflow: hidden; box-shadow: 0 8px 32px rgba(255,0,85,0.2); background: var(--bg-card); border: 1px solid var(--accent); }
+        .recipe-image img { width: 100%; height: auto; display: block; transition: transform 0.5s ease; }
+        .recipe-details { display: flex; flex-direction: column; gap: 1.5rem; }
+        .recipe-details h2 { font-size: 1.8rem; margin-bottom: 0.2rem; color: var(--gold); text-shadow: 0 0 5px var(--gold); }
+        .recipe-details .description { color: var(--text-muted); font-size: 0.95rem; }
+        
+        /* Estilos ajustados para o HTML gerado pelo Editor Rico */
+        .editor-render { background: var(--bg-card); padding: 1.5rem; border-radius: 1.5rem; border: 1px solid var(--border-color); color: var(--text-primary); line-height: 1.6; }
+        .editor-render ul, .editor-render ol { margin-left: 1.5rem; margin-top: 0.5rem; }
+        .editor-render li { margin-bottom: 0.5rem; }
+        .editor-render b, .editor-render strong { color: var(--gold); }
+        .prep-box { border-left: 4px solid var(--accent); }
+        
+        .btn-back { display: inline-flex; align-items: center; gap: 0.5rem; background: var(--bg-card); border: 1px solid var(--border-color); padding: 0.6rem 1.2rem; border-radius: 40px; color: var(--text-primary); text-decoration: none; font-weight: 600; transition: all 0.2s; margin-top: 1rem; }
+        .btn-back:hover { box-shadow: 0 0 10px var(--accent); border-color: var(--accent); }
+        @media(max-width: 700px) { .recipe-card { grid-template-columns: 1fr; } .recipe-tabs { gap: 0.5rem; } .recipe-tab { min-width: 80px; padding: 0.6rem 0.8rem; font-size: 0.8rem; } .tab-icon { font-size: 1.4rem; } }
+    </style>
 </head>
 <body>
-    <div class="receita-container">
-        <header>
-            <h1 id="tituloReceita">Carregando...</h1>
-            <span id="badgeTipo" class="badge"></span>
+    <div class="container">
+        <!-- HEADER -->
+        <header class="header">
+            <div class="logo-area">
+                <img src="logo.png" alt="Logo Roda dos Drinks" class="app-logo-img" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                <div class="logo-box" style="display: none;" id="headerEmoji">🍹</div>
+                <div class="logo-title">
+                    <h1>Roda dos Drinks</h1>
+                    <p><i class="fas fa-glass-martini-alt"></i> <span id="headerTitle">Carregando...</span></p>
+                </div>
+            </div>
+            <div class="top-stats">
+                <div class="stat-badge"><i class="fas fa-coins"></i> <span id="coin-balance"><i class="fas fa-spinner fa-spin"></i></span></div>
+                <button class="btn-toggle-mode" id="btnModeToggle"><i class="fas fa-moon"></i></button>
+                <a href="index.html" class="btn-toggle-mode" style="text-decoration:none;"><i class="fas fa-arrow-left"></i></a>
+            </div>
         </header>
 
-        <main>
-            <div class="card-receita">
-                <h3>Preparo:</h3>
-                <p id="conteudoReceita">Aguardando dados...</p>
+        <!-- CONTAINER DINÂMICO -->
+        <div class="card" id="dynamicContainer" style="display: none;">
+            <div class="recipe-hero">
+                <h1 id="mainTitle">Carregando...</h1>
+                <p id="mainDesc">Aguarde enquanto preparamos seu drink na nuvem.</p>
             </div>
-            <button onclick="window.location.href='index.html'" class="btn-acao">Sortear Outro Drink</button>
-        </main>
+            <div class="recipe-tabs" id="recipeTabs"></div>
+            <div id="recipeContents"></div>
+            <div style="text-align: center;"><a href="index.html" class="btn-back"><i class="fas fa-arrow-left"></i> Voltar ao Bar</a></div>
+        </div>
+        
+        <div id="loadingScreen" style="text-align: center; padding: 5rem 0;">
+            <i class="fas fa-circle-notch fa-spin" style="font-size: 3rem; color: var(--accent);"></i>
+            <p style="margin-top: 1rem; color: var(--text-muted);">Sincronizando com o bar...</p>
+        </div>
     </div>
 
-    <script type="module" src="firebase.js"></script>
+    <!-- Firebase e Motores -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
+    <script src="firebase.js"></script>
+    <script src="temas.js"></script>
+    <script src="core.js"></script>
+    <script src="app.js"></script>
+
     <script>
-        // Lógica simples para pegar o drink do LocalStorage ou URL Params que o core.js salvar
-        document.addEventListener("DOMContentLoaded", () => {
-            const drinkAtual = JSON.parse(localStorage.getItem('drinkSorteado'));
-            if(drinkAtual) {
-                document.getElementById('tituloReceita').textContent = drinkAtual.nome;
-                document.getElementById('conteudoReceita').textContent = drinkAtual.receita;
-                document.getElementById('badgeTipo').textContent = drinkAtual.tipo === 'alcoolico' ? '🍹 Alcoólico' : '🥤 Sem Álcool';
+        document.addEventListener('DOMContentLoaded', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const recipeId = urlParams.get('id');
+
+            if (!recipeId) {
+                document.getElementById('loadingScreen').innerHTML = "<h2 style='color:var(--danger);'>Erro: Receita do drink não especificada.</h2>";
+                return;
             }
+
+            const db = firebase.database();
+            db.ref('conteudo/receitas/' + recipeId).once('value').then(snapshot => {
+                if (!snapshot.exists()) {
+                    document.getElementById('loadingScreen').innerHTML = "<h2 style='color:var(--danger);'>Drink não encontrado no cardápio!</h2>";
+                    return;
+                }
+
+                construirPagina(snapshot.val());
+                document.getElementById('loadingScreen').style.display = 'none';
+                document.getElementById('dynamicContainer').style.display = 'block';
+                
+                // Força a atualização da interface visual
+                if (typeof window.updateCoinsDisplay === 'function') window.updateCoinsDisplay();
+                if (typeof window.applyThemes === 'function') window.applyThemes();
+            }).catch(e => {
+                document.getElementById('loadingScreen').innerHTML = "Erro de conexão: " + e.message;
+            });
         });
+
+        function construirPagina(dados) {
+            document.getElementById('headerEmoji').textContent = dados.icone || '🍹';
+            document.getElementById('headerTitle').textContent = `Receita de ${dados.nome}`;
+            document.getElementById('mainTitle').textContent = dados.nomeLong || dados.nome;
+            document.getElementById('mainDesc').textContent = dados.descricaoGeral || '';
+
+            const tabsContainer = document.getElementById('recipeTabs');
+            const contentsContainer = document.getElementById('recipeContents');
+
+            dados.variacoes.forEach((varObj, index) => {
+                const isActive = index === 0 ? 'active' : '';
+                
+                // Aba
+                const btn = document.createElement('button');
+                btn.className = `recipe-tab ${isActive}`;
+                btn.dataset.target = varObj.id;
+                btn.innerHTML = `<span class="tab-icon">${varObj.iconeAba}</span> ${varObj.nomeAba}`;
+                tabsContainer.appendChild(btn);
+
+                // Prepara os blocos de HTML gerados pelo novo Editor do Admin
+                let ingHTML = varObj.ingredientesHTML || "<em>Nenhum ingrediente informado.</em>";
+                let prepHTML = varObj.passosHTML || "<em>Nenhum passo informado.</em>";
+
+                // Fallback (caso teste com JSON antigo que tinha arrays)
+                if (Array.isArray(varObj.ingredientes)) { ingHTML = `<ul>${varObj.ingredientes.map(i => `<li>${i}</li>`).join('')}</ul>`; }
+                if (Array.isArray(varObj.passos)) { prepHTML = `<ol>${varObj.passos.map(p => `<li>${p}</li>`).join('')}</ol>`; }
+
+                // Conteúdo
+                const divContent = document.createElement('div');
+                divContent.className = `recipe-content ${isActive}`;
+                divContent.id = `content-${varObj.id}`;
+                
+                divContent.innerHTML = `
+                    <div class="recipe-card">
+                        <div class="recipe-image">
+                            <img src="${varObj.imagem}" alt="${varObj.titulo}">
+                        </div>
+                        <div class="recipe-details">
+                            <h2>${varObj.titulo}</h2>
+                            <p class="description">${varObj.descricao}</p>
+                            
+                            <div>
+                                <h4 style="font-weight:700; margin-bottom:0.5rem; color:var(--text-primary);"><i class="fas fa-cocktail"></i> Ingredientes</h4>
+                                <div class="editor-render">${ingHTML}</div>
+                            </div>
+                            
+                            <div>
+                                <h4 style="font-weight:700; margin-bottom:0.5rem; color:var(--text-primary);"><i class="fas fa-blender"></i> Modo de Preparo</h4>
+                                <div class="editor-render prep-box">${prepHTML}</div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                contentsContainer.appendChild(divContent);
+
+                // Clique na Aba
+                btn.addEventListener('click', function() {
+                    document.querySelectorAll('.recipe-tab').forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+                    document.querySelectorAll('.recipe-content').forEach(c => c.classList.remove('active'));
+                    document.getElementById(`content-${this.dataset.target}`).classList.add('active');
+                });
+            });
+        }
     </script>
 </body>
 </html>
