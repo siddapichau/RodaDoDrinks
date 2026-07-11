@@ -28,13 +28,12 @@ window.drawRoulette = function() {
 
     ctx.clearRect(0, 0, width, height);
 
-    // Mudança para buscar "drinks" no AppState
     const items = window.appState?.drinks || [];
     const numSegments = items.length;
 
-    // Paleta Neon padrão da Roda dos Drinks
-    let colors = ["#FF0055", "#00F0FF", "#00FF66", "#FFD700", "#FF8C00", "#9400D3"];
-    let wheelBorder = '#1a0b2e'; 
+    // Cores neon padrão (Vibe de Bar/Drinks)
+    let colors = ['#ff007a', '#7000ff', '#00d4ff', '#00ff9d', '#ffea00', '#ff5e00'];
+    let wheelBorder = '#1e293b'; 
     let wheelCenter = '#ffffff';
 
     try {
@@ -50,7 +49,7 @@ window.drawRoulette = function() {
             }
         }
     } catch (e) {
-        console.warn("Erro ao buscar cores. Usando fallback neon.", e);
+        console.warn("Erro ao buscar cores. Usando fallback.", e);
     }
 
     if (numSegments === 0) {
@@ -62,7 +61,7 @@ window.drawRoulette = function() {
         ctx.font = `bold ${radius * 0.12}px Inter, sans-serif`;
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
-        ctx.fillText('Adicione drinks!', centerX, centerY);
+        ctx.fillText('Adicione bebidas!', centerX, centerY);
         return;
     }
 
@@ -72,7 +71,7 @@ window.drawRoulette = function() {
     ctx.beginPath();
     ctx.arc(centerX, centerY, radius + borderWidth, 0, 2 * Math.PI);
     ctx.fillStyle = wheelBorder;
-    ctx.shadowColor = 'rgba(0, 240, 255, 0.4)';
+    ctx.shadowColor = 'rgba(0,0,0,0.25)';
     ctx.shadowBlur = 12;
     ctx.fill();
     ctx.shadowBlur = 0;
@@ -120,7 +119,7 @@ window.drawRoulette = function() {
         }
 
         ctx.fillStyle = '#ffffff';
-        ctx.shadowColor = 'rgba(0,0,0,0.8)';
+        ctx.shadowColor = 'rgba(0,0,0,0.6)';
         ctx.shadowBlur = 8;
         ctx.fillText(items[i], textRadius, 0);
         ctx.shadowBlur = 0;
@@ -200,16 +199,17 @@ function finalizeSpin() {
         const activeWinSound = winSounds.find(s => s.id === window.appState.currentWinSound) || { type: 'win-tada' };
         if(typeof window.playSynthesizedSound === 'function') window.playSynthesizedSound(activeWinSound.type);
 
-        // Removida a chamada do `launchCurrentEffect` conforme solicitado
+        if (typeof window.launchCurrentEffect === 'function') {
+            window.launchCurrentEffect();
+        }
 
-        const nameEl = document.getElementById('modalDrinkName'); 
+        const nameEl = document.getElementById('modalDrinkName');
         const emojiEl = document.getElementById('modalEmoji');
         const overlay = document.getElementById('resultOverlay');
-        
         if (nameEl && emojiEl && overlay) {
             nameEl.textContent = winningDrink;
             const emojiMatch = winningDrink.match(/\p{Emoji}/u);
-            emojiEl.textContent = emojiMatch ? emojiMatch[0] : '🍹';
+            emojiEl.textContent = emojiMatch ? emojiMatch[0] : '🥂';
             overlay.style.display = 'flex';
         }
 
