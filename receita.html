@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Receita do Drink</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/png" href="logo.png">
+</head>
+<body>
+    <div class="receita-container">
+        <header>
+            <h1 id="tituloReceita">Carregando...</h1>
+            <span id="badgeTipo" class="badge"></span>
+        </header>
+
+        <main>
+            <div class="card-receita">
+                <h3>Preparo:</h3>
+                <p id="conteudoReceita">Aguardando dados...</p>
+            </div>
+            <button onclick="window.location.href='index.html'" class="btn-acao">Sortear Outro Drink</button>
+        </main>
+    </div>
+
+    <script type="module" src="firebase.js"></script>
+    <script>
+        // Lógica simples para pegar o drink do LocalStorage ou URL Params que o core.js salvar
+        document.addEventListener("DOMContentLoaded", () => {
+            const drinkAtual = JSON.parse(localStorage.getItem('drinkSorteado'));
+            if(drinkAtual) {
+                document.getElementById('tituloReceita').textContent = drinkAtual.nome;
+                document.getElementById('conteudoReceita').textContent = drinkAtual.receita;
+                document.getElementById('badgeTipo').textContent = drinkAtual.tipo === 'alcoolico' ? '🍹 Alcoólico' : '🥤 Sem Álcool';
+            }
+        });
+    </script>
+</body>
+</html>
