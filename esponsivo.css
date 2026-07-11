@@ -1,0 +1,47 @@
+/* Ajustes para telas de tablets e celulares maiores */
+@media (max-width: 768px) {
+    .roleta-container {
+        width: 280px;
+        height: 280px;
+    }
+
+    canvas {
+        width: 280px;
+        height: 280px;
+    }
+
+    .display-tempo {
+        font-size: 2.5em;
+    }
+}
+
+/* Ajustes para celulares pequenos */
+@media (max-width: 480px) {
+    .roleta-container {
+        width: 250px;
+        height: 250px;
+    }
+
+    canvas {
+        width: 250px;
+        height: 250px;
+    }
+
+    .btn-acao, .btn-secundario {
+        padding: 12px 20px;
+        font-size: 1em;
+        width: 100%;
+    }
+
+    h1 {
+        font-size: 1.5em;
+    }
+
+    .logo-principal {
+        width: 90px;
+    }
+
+    .display-tempo {
+        font-size: 2em;
+    }
+}
