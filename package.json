@@ -1,7 +1,7 @@
 {
   "name": "roda-dos-drinks",
   "version": "1.0.0",
-  "description": "Roda dos Drinks App - Sorteio de Bebidas",
+  "description": "Roda dos Drinks App",
   "main": "index.html",
   "scripts": {
     "build": "echo 'No build needed'"
