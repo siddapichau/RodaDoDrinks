@@ -1,0 +1,15 @@
+{
+  "name": "Roda dos Drinks",
+  "short_name": "RodaDrinks",
+  "start_url": "/index.html",
+  "display": "standalone",
+  "background_color": "#1a0b2e",
+  "theme_color": "#1a0b2e",
+  "icons": [
+    {
+      "src": "logo.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
