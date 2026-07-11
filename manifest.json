@@ -1,11 +1,11 @@
 {
   "name": "Roda dos Drinks",
   "short_name": "RodaDrinks",
-  "description": "Sorteie seu drink de forma divertida!",
+  "description": "Escolha sua bebida de forma divertida!",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#1a0b2e",
-  "theme_color": "#00F0FF",
+  "background_color": "#0a001a",
+  "theme_color": "#ff007a",
   "icons": [
     {
       "src": "logo.png",
