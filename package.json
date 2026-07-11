@@ -1,0 +1,16 @@
+{
+  "name": "roda-dos-drinks",
+  "version": "1.0.0",
+  "description": "Aplicativo PWA e APK para sorteio de drinks",
+  "main": "app.js",
+  "scripts": {
+    "start": "npx serve .",
+    "build": "echo 'Pronto para empacotar o APK com Capacitor/Cordova'"
+  },
+  "author": "Seu Nome",
+  "license": "MIT",
+  "dependencies": {
+    "firebase": "^10.0.0"
+  },
+  "devDependencies": {}
+}
