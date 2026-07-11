@@ -1,0 +1,6 @@
+{
+  "appId": "com.rodadodrinks.app",
+  "appName": "Roda dos Drinks",
+  "webDir": ".",
+  "bundledWebRuntime": false
+}
