@@ -1,5 +1,5 @@
 'use strict';
-console.log('roleta.js carregado (v1 - Roda dos Drinks)');
+console.log('roleta.js carregado (v1 - Roda dos Drinks - Suporte a Temas Dinâmicos)');
 
 let startAngle = 0;
 let isSpinning = false;
@@ -24,18 +24,19 @@ window.drawRoulette = function() {
     const height = canvas.height;
     const centerX = width / 2;
     const centerY = height / 2;
-    const radius = Math.min(width, height) * 0.46;
+    const radius = Math.min(width, height) * 0.44;
 
     ctx.clearRect(0, 0, width, height);
 
     const items = window.appState?.drinks || [];
     const numSegments = items.length;
 
-    // Cores neon padrão (Vibe de Bar/Drinks)
+    // Cores neon padrão (Vibe de Bar/Drinks) como Fallback[cite: 18]
     let colors = ['#ff007a', '#7000ff', '#00d4ff', '#00ff9d', '#ffea00', '#ff5e00'];
     let wheelBorder = '#1e293b'; 
     let wheelCenter = '#ffffff';
 
+    // Busca dinâmica de temas mantida idêntica para NÃO QUEBRAR O SISTEMA[cite: 18]
     try {
         if (typeof window.getRouletteThemes === 'function') {
             const themes = window.getRouletteThemes();
@@ -66,26 +67,39 @@ window.drawRoulette = function() {
     }
 
     const arcSize = (2 * Math.PI) / numSegments;
-    const borderWidth = radius * 0.045;
+    const borderWidth = radius * 0.06;
 
+    // 1. Desenho da Borda Externa Baseada no Tema com Brilho Neon (Inspirado na Logo)
+    ctx.save();
     ctx.beginPath();
     ctx.arc(centerX, centerY, radius + borderWidth, 0, 2 * Math.PI);
     ctx.fillStyle = wheelBorder;
-    ctx.shadowColor = 'rgba(0,0,0,0.25)';
-    ctx.shadowBlur = 12;
+    ctx.strokeStyle = colors[0]; // Puxa dinamicamente a primeira cor do tema para o brilho neon
+    ctx.lineWidth = 3;
+    ctx.shadowColor = colors[0];
+    ctx.shadowBlur = 15;
     ctx.fill();
-    ctx.shadowBlur = 0;
+    ctx.stroke();
+    ctx.restore();
 
-    for (let b = 0; b < 20; b++) {
-        const bAngle = (b * 2 * Math.PI) / 20;
-        const bx = centerX + (radius + borderWidth * 0.6) * Math.cos(bAngle);
-        const by = centerY + (radius + borderWidth * 0.6) * Math.sin(bAngle);
+    // 2. Lâmpadas Iluminadas ao Redor da Borda (Inspirado na Logo)
+    const numLights = 24;
+    for (let b = 0; b < numLights; b++) {
+        const bAngle = (b * 2 * Math.PI) / numLights;
+        const bx = centerX + (radius + borderWidth * 0.5) * Math.cos(bAngle);
+        const by = centerY + (radius + borderWidth * 0.5) * Math.sin(bAngle);
+        
+        ctx.save();
         ctx.beginPath();
         ctx.arc(bx, by, radius * 0.02, 0, 2 * Math.PI);
-        ctx.fillStyle = '#ffffff';
+        ctx.shadowColor = '#ffea00';
+        ctx.shadowBlur = 8;
+        ctx.fillStyle = '#ffea00';
         ctx.fill();
+        ctx.restore();
     }
 
+    // 3. Renderização Dinâmica das Fatias (Mantendo as cores corretas do Tema ativo)
     for (let i = 0; i < numSegments; i++) {
         const currentArc = startAngle + i * arcSize;
         const color = colors[i % colors.length];
@@ -97,8 +111,9 @@ window.drawRoulette = function() {
         ctx.closePath();
         ctx.fill();
         
-        ctx.strokeStyle = 'rgba(255,255,255,0.2)';
-        ctx.lineWidth = 2;
+        // Linhas divisórias das fatias com um efeito sutil de brilho integrado
+        ctx.strokeStyle = 'rgba(255,255,255,0.25)';
+        ctx.lineWidth = 2.5;
         ctx.stroke();
 
         ctx.save();
@@ -122,18 +137,29 @@ window.drawRoulette = function() {
         ctx.shadowColor = 'rgba(0,0,0,0.6)';
         ctx.shadowBlur = 8;
         ctx.fillText(items[i], textRadius, 0);
-        ctx.shadowBlur = 0;
         ctx.restore();
     }
 
-    const centerRadius = radius * 0.16;
+    // 4. Eixo Central Duplo com Neon Inteligente (Inspirado na Logo, preservando a cor do Tema)
+    const centerRadius = radius * 0.18;
+    ctx.save();
     ctx.beginPath();
     ctx.arc(centerX, centerY, centerRadius, 0, 2 * Math.PI);
     ctx.fillStyle = wheelCenter;
-    ctx.strokeStyle = wheelBorder;
-    ctx.lineWidth = centerRadius * 0.15;
+    ctx.strokeStyle = colors[0];
+    ctx.lineWidth = 4;
+    ctx.shadowColor = colors[0];
+    ctx.shadowBlur = 12;
     ctx.fill();
     ctx.stroke();
+
+    // Círculo interno menor do miolo central
+    ctx.beginPath();
+    ctx.arc(centerX, centerY, centerRadius * 0.7, 0, 2 * Math.PI);
+    ctx.strokeStyle = colors[1] || colors[0];
+    ctx.lineWidth = 2;
+    ctx.stroke();
+    ctx.restore();
 };
 
 window.spinRoulette = function() {
